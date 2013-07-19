@@ -13,7 +13,7 @@ for line in lines
   puts line.gsub("\t", "  \\t  ")
   puts
   for f in [:name, :flag, :chrom, :pos, :mapq, :cigar, :mchrom, :mpos, :insert, :seq, :qual, :tags]
-    puts "#{f}\t#{sam.send(f).inspect}"
+    puts "#{f}\t\t#{sam.send(f).inspect}"
   end
   puts
 end

@@ -1,5 +1,8 @@
 class Sam
 
+  # meanings of SAM flag components, with index i
+  # being one more than the exponent 2 must be raised to to get the
+  # value (i.e. value = 2^(i+1))
   $flags = [
     nil,
     0x1,  #    1. read paired 
