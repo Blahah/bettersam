@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.description = "Extended SAM (Sequence Alignment/Map) file parsing"
   s.authors     = ["Richard Smith", "Jesse Rodriguez"]
   s.email       = 'rds45@cam.ac.uk'
-  s.files       = ["lib/sam.rb"]
+  s.files       = ["lib/better_sam.rb"]
   s.homepage    = 'https://github.com/blahah/samruby'
 end

@@ -1,10 +1,7 @@
-#!/usr/bin/env ruby
+require "minitest/autorun"
 
 load "#{File.dirname(__FILE__)}/../lib/sam.rb"
 
-lines=[
-"readname	0	chrX	46615805	37	76M	*	0	0	AAATCTT...	edaecdd...	XT:A:U	NM:i:0	X0:i:1"
-]
 
 
 for line in lines
@@ -16,4 +13,18 @@ for line in lines
     puts "#{f}\t\t#{sam.send(f).inspect}"
   end
   puts
+end
+
+class TestSam < Minitest::TestSam
+  def setup
+    @read = "readname 0 chrX  46615805  37  76M * 0 0 AAATCTT...  edaecdd...  XT:A:U  NM:i:0  X0:i:1"
+  end
+
+  def test_that_readname_is_captured
+
+  end
+
+  def test_that_flags_parse
+    assert @read
+  end
 end
