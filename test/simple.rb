@@ -1,8 +1,6 @@
 require "minitest/autorun"
 
-load "#{File.dirname(__FILE__)}/../lib/sam.rb"
-
-
+load "#{File.dirname(__FILE__)}/../lib/better_sam.rb"
 
 for line in lines
   sam = Sam.new(line)
@@ -15,7 +13,7 @@ for line in lines
   puts
 end
 
-class TestSam < Minitest::TestSam
+class TestBetterSam < Minitest::TestBetterSam
   def setup
     @read = "readname 0 chrX  46615805  37  76M * 0 0 AAATCTT...  edaecdd...  XT:A:U  NM:i:0  X0:i:1"
   end

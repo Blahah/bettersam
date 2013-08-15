@@ -61,47 +61,47 @@ public
   end
 
   def read_paired?
-    @flag & $flags[1]
+    @flag & $flags[1] != 0
   end
 
   def read_properly_paired?
-    @flag & $flags[2]
+    @flag & $flags[2] != 0
   end
 
   def read_unmapped?
-    @flag & $flags[3]
+    @flag & $flags[3] != 0
   end
 
   def mate_unmapped?
-    @flag & $flags[4]
+    @flag & $flags[4] != 0
   end
 
   def read_reverse_strand?
-    @flag & $flags[5]
+    @flag & $flags[5] != 0
   end
 
   def mate_reverse_strand?
-    @flag & $flags[6]
+    @flag & $flags[6] != 0
   end
 
   def first_in_pair?
-    @flag & $flags[7]
+    @flag & $flags[7] != 0
   end
 
   def second_in_pair?
-    @flag & $flags[8]
+    @flag & $flags[8] !=0
   end
 
   def primary_aln?
-    !(@flag & $flags[9])
+    !(@flag & $flags[9]) != 0
   end
 
   def quality_fail?
-    @flag & $flags[10]
+    @flag & $flags[10] != 0
   end
 
   def pcr_duplicate?
-    @flag & $flags[11]
+    @flag & $flags[11] != 0
   end
 
 private
