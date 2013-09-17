@@ -60,6 +60,8 @@ public
     return true;
   end
 
+  # flag parsing convenience methods
+
   def read_paired?
     @flag & $flags[1] != 0
   end
@@ -103,6 +105,22 @@ public
   def pcr_duplicate?
     @flag & $flags[11] != 0
   end
+
+  # pair convenience methods
+
+  def both_mapped?
+    !(self.read_unmapped? && self.mate_unmapped?)
+  end
+
+  def pair_opposite_strands?
+    (!self.read_reverse_strand? && self.mate_reverse_strand?) || 
+      (self.read_reverse_strand? && !self.mate_reverse_strand?)
+  end
+
+  def pair_same_strand?
+    !self.pair_opposite_strands?
+  end
+
 
 private
 
