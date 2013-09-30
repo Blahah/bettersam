@@ -121,6 +121,78 @@ public
     !self.pair_opposite_strands?
   end
 
+  # cigar parsing methods
+
+  def exact_match?
+    @cigar=="100M"
+  end
+
+  def endpos
+    if !@cigar_list
+      self.parse_cigar
+    end
+    e = @pos
+    @cigar_list.each do |h|
+      a = h.to_a
+      bases = a[0][0]
+      match = a[0][1]
+      if match =~ /[MD]/
+        e += bases
+      end
+    end
+    return e
+  end
+
+  def parse_cigar
+    str = @cigar
+    l = str.length
+    @cigar_list = []
+    while str.length>0
+      str =~ /([0-9]+[MIDNSHPX=]+)/
+      @cigar_list << {$1[0..-2].to_i => $1[-1]}
+      str = str.slice($1.length, l)
+    end
+  end
+
+  # snp storing
+
+  def contains_snp?(snp)
+    snp >= @pos and snp < self.endpos
+  end
+
+  def mark_snp(snp)
+    if self.contains_snp?(snp)
+      if !@cigar_list
+        self.parse_cigar
+      end
+      p = @pos
+      s = snp
+      @cigar_list.each do |h|
+        if p > s and s >= @pos
+          @snp = s - @pos
+        else
+          a = h.to_a
+          bases = a[0][0]
+          match = a[0][1]
+          if match == "M"
+            p += bases
+          elsif match == "I"
+            s += bases
+          elsif match == "D"
+            s -= bases
+          end
+        end
+      end
+      if p > s and s >= @pos
+        @snp = s - @pos
+      end
+    end
+    @snp
+  end
+
+  def get_base_at(p)
+    @seq[p]
+  end
 
 private
 
@@ -132,4 +204,5 @@ private
     Integer(x) rescue x
   end
 
+  
 end
