@@ -19,6 +19,8 @@ class BetterSam
 
 public
   attr_accessor :name, :flag, :chrom, :pos, :mapq, :cigar, :mchrom, :mpos, :insert, :seq, :qual, :tags
+  attr_accessor :snp
+  attr_reader :cigar_list
 
   def initialize(line=nil)
     @tags = {}
@@ -148,9 +150,12 @@ public
     l = str.length
     @cigar_list = []
     while str.length>0
-      str =~ /([0-9]+[MIDNSHPX=]+)/
-      @cigar_list << {$1[0..-2].to_i => $1[-1]}
-      str = str.slice($1.length, l)
+      if str =~ /([0-9]+[MIDNSHPX=]+)/        
+        @cigar_list << {$1[0..-2].to_i => $1[-1]}
+        str = str.slice($1.length, l)
+      else
+        puts str
+      end
     end
   end
 
@@ -190,6 +195,48 @@ public
     @snp
   end
 
+  def transfer_snp(bs) # load in another bettersam object
+    if !self.read_unmapped? and !bs.read_unmapped?
+      if (self.read_reverse_strand? and bs.read_reverse_strand?) or (!self.read_reverse_strand? and !bs.read_reverse_strand?)
+        @snp = bs.snp
+      else
+      end
+    end
+  end
+
+  def put_snp # find the location of a snp on the genome
+    if @snp
+      if !@cigar_list
+        self.parse_cigar
+      end
+      s = @snp
+      p = 0
+      @cigar_list.each do |h|
+        if p > s
+          return s+@pos
+        else
+          a = h.to_a
+          bases = a[0][0]
+          match = a[0][1]
+          if match=="M"
+            p += bases
+          elsif match=="D"
+            s += bases
+          elsif match=="I"
+            s -= bases
+          end
+        end
+      end
+      if p > s
+        return s+@pos
+      end
+    else
+      puts "need to run mark_snp and transfer_snp first"
+      return nil
+    end
+    return -1
+  end
+
   def get_base_at(p)
     @seq[p]
   end
@@ -204,5 +251,5 @@ private
     Integer(x) rescue x
   end
 
-  
+
 end
