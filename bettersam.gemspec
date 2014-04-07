@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
   s.require_paths = %w[ lib ]
 
   s.add_dependency 'simplecov'
-  s.add_dependency 'rake', '~> 10.1.0'
+  s.add_dependency 'rake'
   s.add_dependency 'turn'
   s.add_dependency 'shoulda-context'
-  s.add_dependency 'coveralls', '~> 0.6.7'
+  s.add_dependency 'coveralls'
 end
