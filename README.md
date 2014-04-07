@@ -13,3 +13,4 @@ A SAM library for ruby, based on https://github.com/jesserod/samruby.
 [travis]: https://travis-ci.org/Blahah/bettersam
 [gemnasium]: https://gemnasium.com/Blahah/bettersam
 [codeclimate]: https://codeclimate.com/github/Blahah/bettersam
+[coveralls]: https://coveralls.io/r/Blahah/bettersam
