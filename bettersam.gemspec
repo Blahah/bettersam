@@ -10,12 +10,12 @@ Gem::Specification.new do |s|
   s.files       = ["lib/bettersam.rb"]
   s.homepage    = 'https://github.com/blahah/bettersam'
 
-  gem.files = Dir['Rakefile', '{lib,test}/**/*', 'README*', 'LICENSE*']
-  gem.require_paths = %w[ lib ]
+  s.files = Dir['Rakefile', '{lib,test}/**/*', 'README*', 'LICENSE*']
+  s.require_paths = %w[ lib ]
 
-  gem.add_development_dependency 'rake', '~> 10.1.0'
-  gem.add_development_dependency 'turn'
-  gem.add_development_dependency 'simplecov'
-  gem.add_development_dependency 'shoulda-context'
-  gem.add_development_dependency 'coveralls', '~> 0.6.7'
+  s.add_development_dependency 'rake', '~> 10.1.0'
+  s.add_development_dependency 'turn'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'shoulda-context'
+  s.add_development_dependency 'coveralls', '~> 0.6.7'
 end
