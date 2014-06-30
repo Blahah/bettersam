@@ -5,7 +5,7 @@ class BetterSam
   # value (i.e. value = 2^(i+1))
   $flags = [
     nil,
-    0x1,  #    1. read paired 
+    0x1,  #    1. read paired
     0x2,  #    2. read mapped in proper pair (i.e. with acceptable insert size)
     0x4,  #    3. read unmapped
     0x8,  #    4. mate unmapped
@@ -29,7 +29,7 @@ public
 
   def parse_line(line)
     return false if line[0] == "@"
-    
+
     f = line.chomp.split("\t", -1)
     raise "SAM lines must have at least 11 fields (had #{f.size})" if f.size < 11
 
@@ -52,7 +52,7 @@ public
     while i < f.size
       tag = f[i]
       i += 1
-      colon_index = tag.rindex(':') 
+      colon_index = tag.rindex(':')
       raise line if f.rindex == nil
       key = tag[0, colon_index]
       value = int_or_raw(tag[colon_index + 1, tag.size - colon_index] || "")
@@ -97,7 +97,7 @@ public
   end
 
   def primary_aln?
-    !(@flag & $flags[9]) != 0
+    (@flag & $flags[9]) == 0
   end
 
   def quality_fail?
@@ -115,7 +115,7 @@ public
   end
 
   def pair_opposite_strands?
-    (!self.read_reverse_strand? && self.mate_reverse_strand?) || 
+    (!self.read_reverse_strand? && self.mate_reverse_strand?) ||
       (self.read_reverse_strand? && !self.mate_reverse_strand?)
   end
 
@@ -150,7 +150,7 @@ public
     l = str.length
     @cigar_list = []
     while str.length>0
-      if str =~ /([0-9]+[MIDNSHPX=]+)/        
+      if str =~ /([0-9]+[MIDNSHPX=]+)/
         @cigar_list << {$1[0..-2].to_i => $1[-1]}
         str = str.slice($1.length, l)
       else
