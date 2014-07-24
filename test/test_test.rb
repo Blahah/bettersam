@@ -94,5 +94,9 @@ class TestBetterSam < Test::Unit::TestCase
       assert !@l5l.primary_aln?
     end
 
+    should "get the edit distance" do
+      assert_equal 4, @l1.tags[:NM]
+    end
+
   end
 end
