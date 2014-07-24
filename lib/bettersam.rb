@@ -52,11 +52,15 @@ public
     while i < f.size
       tag = f[i]
       i += 1
-      colon_index = tag.rindex(':')
-      raise line if f.rindex == nil
-      key = tag[0, colon_index]
-      value = int_or_raw(tag[colon_index + 1, tag.size - colon_index] || "")
-      @tags[key] = value
+      a = tag.split(":")
+      raise line if a.length != 3
+      if a[1]=="i"
+        @tags[a[0].to_sym] = a[2].to_i
+      elsif a[1]=="Z"
+        @tags[a[0].to_sym] = a[2]
+      else
+        @tags[a[0].to_sym] = a[2]
+      end
     end
 
     return true;
