@@ -13,7 +13,7 @@ class TestBetterSam < Test::Unit::TestCase
       @l3 = BetterSam.new("FCC00CKABXX:2:1101:19524:66398#CAGATCAT	145	chromosome03	1789377	23	4M1I2M1D93M	=	1788766	-711	GGAGGATCGGGCCTCGTGGGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAACGAGCTCGA	Bc`aaT\Y_]RLMKKMHEMV_T[Y[deaeeeaadbaaa\_feecedddddadfcegdcXdggcggggggggg`gfbecbcggggggggeggggggggggg	AS:i:-51	XN:i:0	XM:i:6	XO:i:2	XG:i:2	NM:i:8	MD:Z:2T0C2^A2T0A5G1A81	YS:i:0	YT:Z:DP")
   	  @l4l = BetterSam.new("FCC00CKABXX:2:1101:16909:83925#CAGATCAT	145	nivara_3s	1572267	23	5M2D3M2I3M1I86M	=	1571498	-868	GTCCTCCAGGAGGATCGGGCCTCGTGAGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAAC	BBBBBB_Z`cU]^SZS][]USKV[L`ac`dedeageeefagegagffdd`egedgggedgggggggdggggggggefeeeQgeagggggggggggggggg	AS:i:-53	XN:i:0	XM:i:4	XO:i:3	XG:i:5	NM:i:9	MD:Z:2G2^TG3T5T0A81	YS:i:0	YT:Z:DP")
 	    @l4r = BetterSam.new("FCC00CKABXX:2:1101:16909:83925#CAGATCAT	145	chromosome03	1789378	23	7M4I3M5I81M	=	1788753	-716	GTCCTCCAGGAGGATCGGGCCTCGTGAGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAAC	BBBBBB_Z`cU]^SZS][]USKV[L`ac`dedeageeefagegagffdd`egedgggedgggggggdggggggggefeeeQgeagggggggggggggggg	AS:i:-59	XN:i:0	XM:i:4	XO:i:2	XG:i:9	NM:i:13	MD:Z:3A1A2T6G75	YS:i:0	YT:Z:DP")
-      @l5l = BetterSam.new("FCC2HFRACXX:7:2314:9299:67450#TGACCAAT	355	Sb02g000720.1	1186	18	71M	=	1238	-150	CGTCATCTTCTCTCATATATTTGTATCACCCATCCATCCATCTGCCTTCGATATGCATCTCCACTCCGCCG	__^cc]^\`eegea`ffdfghhfd]eghhfffef``degfhf_^gdfhfg_fghhhfdhffdfhffbeWcW	AS:i:142	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:71	YS:i:44	YT:Z:CP")
+      @l5l = BetterSam.new("FCC2HFRACXX:7:2314:9299:67450#TGACCAAT	355	Sb02g000720.1	1186	18	71M	=	1238	-150	CGTCATCTTCTCTCATATATTTGTATCACCCATCCATCCATCTGCCTTCGATATGCATCTCCACTCCGCCG	__^cc]^\`eegea`ffdfghhfd]eghhfffef``degfhf_^gdfhfg_fghhhfdhffdfhffbeWcW	AS:i:142	XN:i:0	XM:i:0	XO:i:0	XG:i:0	MD:Z:71	YS:i:44	YT:Z:CP") #   NM:i:0
     end
 
     should "be a paired read" do
@@ -96,6 +96,10 @@ class TestBetterSam < Test::Unit::TestCase
 
     should "get the edit distance" do
       assert_equal 4, @l1.tags[:NM]
+    end
+
+    should "fail to get the edit distance" do
+      assert_equal nil, @l5l.tags[:NM]
     end
 
   end
