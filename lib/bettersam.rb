@@ -18,8 +18,9 @@ class BetterSam
     0x400]  #  11. read is PCR or optical duplicate
 
 public
-  attr_accessor :name, :flag, :chrom, :pos, :mapq, :cigar, :mchrom, :mpos, :insert, :seq, :qual, :tags
-  attr_accessor :snp
+  attr_accessor :name, :flag, :chrom, :pos, :mapq, :cigar, :mchrom, :mpos
+  attr_accessor :insert, :seq, :qual, :tags
+  attr_accessor :snp, :length
   attr_reader :cigar_list
 
   def initialize(line=nil)
@@ -129,6 +130,11 @@ public
 
   def edit_distance
     @tags[:NM]
+  end
+
+  def length
+    @length = @seq.length if !@length
+    return @length
   end
 
   # cigar parsing methods
