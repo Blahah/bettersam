@@ -127,10 +127,14 @@ public
     !self.pair_opposite_strands?
   end
 
+  def edit_distance
+    @tags[:NM]
+  end
+
   # cigar parsing methods
 
   def exact_match?
-    @cigar=="100M"
+    @tags[:NM]==0
   end
 
   def endpos
