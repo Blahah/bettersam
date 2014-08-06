@@ -5,7 +5,7 @@ class BetterSam
   # value (i.e. value = 2^(i+1))
   $flags = [
     nil,
-    0x1,  #    1. read paired 
+    0x1,  #    1. read paired
     0x2,  #    2. read mapped in proper pair (i.e. with acceptable insert size)
     0x4,  #    3. read unmapped
     0x8,  #    4. mate unmapped
@@ -18,8 +18,9 @@ class BetterSam
     0x400]  #  11. read is PCR or optical duplicate
 
 public
-  attr_accessor :name, :flag, :chrom, :pos, :mapq, :cigar, :mchrom, :mpos, :insert, :seq, :qual, :tags
-  attr_accessor :snp
+  attr_accessor :name, :flag, :chrom, :pos, :mapq, :cigar, :mchrom, :mpos
+  attr_accessor :insert, :seq, :qual, :tags
+  attr_accessor :snp, :length
   attr_reader :cigar_list
 
   def initialize(line=nil)
@@ -29,7 +30,7 @@ public
 
   def parse_line(line)
     return false if line[0] == "@"
-    
+
     f = line.chomp.split("\t", -1)
     raise "SAM lines must have at least 11 fields (had #{f.size})" if f.size < 11
 
@@ -52,11 +53,15 @@ public
     while i < f.size
       tag = f[i]
       i += 1
-      colon_index = tag.rindex(':') 
-      raise line if f.rindex == nil
-      key = tag[0, colon_index]
-      value = int_or_raw(tag[colon_index + 1, tag.size - colon_index] || "")
-      @tags[key] = value
+      a = tag.split(":")
+      raise line if a.length != 3
+      if a[1]=="i"
+        @tags[a[0].to_sym] = a[2].to_i
+      elsif a[1]=="Z"
+        @tags[a[0].to_sym] = a[2]
+      else
+        @tags[a[0].to_sym] = a[2]
+      end
     end
 
     return true;
@@ -97,7 +102,7 @@ public
   end
 
   def primary_aln?
-    !(@flag & $flags[9]) != 0
+    (@flag & $flags[9]) == 0
   end
 
   def quality_fail?
@@ -115,7 +120,7 @@ public
   end
 
   def pair_opposite_strands?
-    (!self.read_reverse_strand? && self.mate_reverse_strand?) || 
+    (!self.read_reverse_strand? && self.mate_reverse_strand?) ||
       (self.read_reverse_strand? && !self.mate_reverse_strand?)
   end
 
@@ -123,10 +128,19 @@ public
     !self.pair_opposite_strands?
   end
 
+  def edit_distance
+    @tags[:NM]
+  end
+
+  def length
+    @length = @seq.length if !@length
+    return @length
+  end
+
   # cigar parsing methods
 
   def exact_match?
-    @cigar=="100M"
+    @tags[:NM]==0
   end
 
   def endpos
@@ -150,7 +164,7 @@ public
     l = str.length
     @cigar_list = []
     while str.length>0
-      if str =~ /([0-9]+[MIDNSHPX=]+)/        
+      if str =~ /([0-9]+[MIDNSHPX=]+)/
         @cigar_list << {$1[0..-2].to_i => $1[-1]}
         str = str.slice($1.length, l)
       else
