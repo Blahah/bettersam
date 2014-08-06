@@ -8,7 +8,7 @@ class TestBetterSam < Test::Unit::TestCase
 
     setup do
       # this is run before each test
-      @l1 = BetterSam.new("FCC00CKABXX:2:1101:10117:6470#CAGATCAT	81	nivara_3s	1572276	40	100M	=	1571527	-849	AGGATCGGGCCTCGTGAGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAACGAGCTCGACG	ZbaX^_baX\_S]_ZdYccYebeffddZdbebdadc[bdVeeeceeeddggggggggggggggggegeggdffbfefegggggggggggggggggggggg	AS:i:-24	XN:i:0	XM:i:4	XO:i:0	XG:i:0	NM:i:4	MD:Z:1T1G3T0A91	YS:i:-5	YT:Z:DP")
+      @l1 = BetterSam.new("FCC00CKABXX:2:1101:10117:6470#CAGATCAT	81	nivara_3s	1572276	40	100M	=	1571527	-849	AGGATCGGGCCTCGTGAGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAACGAGCTCGACG	ZbaX^_baX\_S]_ZdYccYebeffddZdbebdadc[bdVeeeceeeddggggggggggggggggegeggdffbfefegggggggggggggggggggggg	AS:i:-24	XN:i:0	XM:i:4	XO:i:0	XG:i:0	NM:i:0	MD:Z:1T1G3T0A91	YS:i:-5	YT:Z:DP")
       @l2 = BetterSam.new("FCC00CKABXX:2:1101:10117:6470#CAGATCAT	81	chromosome03	1789384	24	4M5I91M	=	1788782	-697	AGGATCGGGCCTCGTGAGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAACGAGCTCGACG	ZbaX^_baX\_S]_ZdYccYebeffddZdbebdadc[bdVeeeceeeddggggggggggggggggegeggdffbfefegggggggggggggggggggggg	AS:i:-38	XN:i:0	XM:i:3	XO:i:1	XG:i:5	NM:i:8	MD:Z:0C1T6G85	YS:i:-5	YT:Z:DP")
       @l3 = BetterSam.new("FCC00CKABXX:2:1101:19524:66398#CAGATCAT	145	chromosome03	1789377	23	4M1I2M1D93M	=	1788766	-711	GGAGGATCGGGCCTCGTGGGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAACGAGCTCGA	Bc`aaT\Y_]RLMKKMHEMV_T[Y[deaeeeaadbaaa\_feecedddddadfcegdcXdggcggggggggg`gfbecbcggggggggeggggggggggg	AS:i:-51	XN:i:0	XM:i:6	XO:i:2	XG:i:2	NM:i:8	MD:Z:2T0C2^A2T0A5G1A81	YS:i:0	YT:Z:DP")
   	  @l4l = BetterSam.new("FCC00CKABXX:2:1101:16909:83925#CAGATCAT	145	nivara_3s	1572267	23	5M2D3M2I3M1I86M	=	1571498	-868	GTCCTCCAGGAGGATCGGGCCTCGTGAGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAAC	BBBBBB_Z`cU]^SZS][]USKV[L`ac`dedeageeefagegagffdd`egedgggedgggggggdggggggggefeeeQgeagggggggggggggggg	AS:i:-53	XN:i:0	XM:i:4	XO:i:3	XG:i:5	NM:i:9	MD:Z:2G2^TG3T5T0A81	YS:i:0	YT:Z:DP")
@@ -95,7 +95,7 @@ class TestBetterSam < Test::Unit::TestCase
     end
 
     should "get the edit distance" do
-      assert_equal 4, @l1.tags[:NM]
+      assert_equal 8, @l2.tags[:NM]
     end
 
     should "fail to get the edit distance" do
