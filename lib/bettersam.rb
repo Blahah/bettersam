@@ -19,7 +19,7 @@ class BetterSam
 
 public
   attr_accessor :name, :flag, :chrom, :pos, :mapq, :cigar, :mchrom, :mpos
-  attr_accessor :insert, :seq, :qual, :tags
+  attr_accessor :insert, :seq, :qual, :tags, :length
   attr_accessor :snp
   attr_reader :cigar_list
 
@@ -47,6 +47,7 @@ public
     @insert = int_or_raw(f[8])
     @seq = f[9]
     @qual = f[10]
+    @length = nil
 
     @tags = {}
     i = 11
@@ -133,7 +134,8 @@ public
   end
 
   def length
-    @seq.length
+    @length = @seq.length if !@length
+    return @length
   end
 
   # cigar parsing methods
