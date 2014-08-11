@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name        = 'bettersam'
-  gem.version     = '0.1.0'
+  gem.version     = '0.1.1'
   gem.date        = '2014-08-05'
   gem.license     = 'MIT'
   gem.summary     = "Extended SAM file parsing"
