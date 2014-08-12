@@ -1,26 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-#define _BSIZE 100000
-typedef struct {
-  char *line;
-  char *qname;
-  char *flag;
-  char *rname;
-  char *pos;
-  char *mapq;
-  char *cigar;
-  char *rnext;
-  char *pnext;
-  char *tlen;
-  char *seq;
-  char *qual;
-  char *tags;
-  char *filename;
-  FILE *stream;
-}SAMRecord;
-
+#include "fastersam.h"
 
 static char* alloc_and_copy(char *dst, char *src) {
   if (dst==NULL || strlen(dst)<strlen(src)) {
@@ -122,6 +103,35 @@ int parse_fields(char *str, char ***arr) {
   return count;
 }
 
+void clear_record(SAMRecord *sam) {
+  sam->qname = initialize(sam->qname);
+  sam->flag  = initialize(sam->flag);
+  sam->rname = initialize(sam->rname);
+  sam->pos   = initialize(sam->pos);
+  sam->mapq  = initialize(sam->mapq);
+  sam->cigar = initialize(sam->cigar);
+  sam->rnext = initialize(sam->rnext);
+  sam->pnext = initialize(sam->pnext);
+  sam->tlen  = initialize(sam->tlen);
+  sam->seq   = initialize(sam->seq);
+  sam->qual  = initialize(sam->qual);
+}
+
+void load_record(SAMRecord *sam, char **fields) {
+  sam->qname = alloc_and_copy(sam->qname, fields[0]);
+  sam->flag  = alloc_and_copy(sam->flag, fields[1]);
+  sam->rname = alloc_and_copy(sam->rname, fields[2]);
+  sam->pos   = alloc_and_copy(sam->pos, fields[3]);
+  sam->mapq  = alloc_and_copy(sam->mapq, fields[4]);
+  sam->cigar = alloc_and_copy(sam->cigar, fields[5]);
+  sam->rnext = alloc_and_copy(sam->rnext, fields[6]);
+  sam->pnext = alloc_and_copy(sam->pnext, fields[7]);
+  sam->tlen  = alloc_and_copy(sam->tlen, fields[8]);
+  sam->seq   = alloc_and_copy(sam->seq, fields[9]);
+  sam->qual  = alloc_and_copy(sam->qual, fields[10]);
+  // sam->tags  = fields[11];
+}
+
 int sam_iterator(SAMRecord *sam) {
   // intialise structure elements.
   char *header = "@"; // SAM header
@@ -138,17 +148,7 @@ int sam_iterator(SAMRecord *sam) {
   }
 
   // wipe out any data from previous iteration
-  sam->qname = initialize(sam->qname);
-  sam->flag  = initialize(sam->flag);
-  sam->rname = initialize(sam->rname);
-  sam->pos   = initialize(sam->pos);
-  sam->mapq  = initialize(sam->mapq);
-  sam->cigar = initialize(sam->cigar);
-  sam->rnext = initialize(sam->rnext);
-  sam->pnext = initialize(sam->pnext);
-  sam->tlen  = initialize(sam->tlen);
-  sam->seq   = initialize(sam->seq);
-  sam->qual  = initialize(sam->qual);
+  clear_record(sam);
 
   // load the next line
   if (fgets(sam->line, _BSIZE, sam->stream) == NULL) {
@@ -156,42 +156,31 @@ int sam_iterator(SAMRecord *sam) {
     return 0;
   }
 
-  // parse the SAM record into a struct
+  // parse the SAM record string into an array
   char **fields = NULL;
   int nfields = parse_fields(sam->line, &fields);
   if (nfields < 10) {
     return 1;
   }
-  sam->qname = alloc_and_copy(sam->qname, fields[0]);
-  sam->flag  = alloc_and_copy(sam->flag, fields[1]);
-  sam->rname = alloc_and_copy(sam->rname, fields[2]);
-  sam->pos   = alloc_and_copy(sam->pos, fields[3]);
-  sam->mapq  = alloc_and_copy(sam->mapq, fields[4]);
-  sam->cigar = alloc_and_copy(sam->cigar, fields[5]);
-  sam->rnext = alloc_and_copy(sam->rnext, fields[6]);
-  sam->pnext = alloc_and_copy(sam->pnext, fields[7]);
-  sam->tlen  = alloc_and_copy(sam->tlen, fields[8]);
-  sam->seq   = alloc_and_copy(sam->seq, fields[9]);
-  sam->qual  = alloc_and_copy(sam->qual, fields[10]);
-  // sam->tags  = fields[11];
+
+  // load it into the struct
+  load_record(sam, fields);
 
   return 1;
 }
 
 int main (int argc, char ** argv) {
-  int i;
-  char *s = "FCC00CKABXX:2:1101:10117:6470#CAGATCAT	81	nivara_3s	1572276	40	100M	=	1571527	-849	AGGATCGGGCCTCGTGAGCCGACGGTGAGCGAGTTGTTGTTGTTCCATACGGGGGCGCCGGAGTTGGTGCTCCACAGCGGGCCGTTGAACGAGCTCGACG	ZbaX^_baX\\_S]_ZdYccYebeffddZdbebdadc[bdVeeeceeeddggggggggggggggggegeggdffbfefegggggggggggggggggggggg	AS:i:-24	XN:i:0	XM:i:4	XO:i:0	XG:i:0	NM:i:0	MD:Z:1T1G3T0A91	YS:i:-5	YT:Z:DP";
-  int c = 0;
-  char **arr = NULL;
-
-  c = parse_fields(s, &arr);
-
-  printf("found %d SAM fields.\n", c);
-
-  for (i = 0; i < c; i++) {
-    printf("field #%d: %s\n", i+1, arr[i]);
+  SAMRecord *s = malloc(sizeof(SAMRecord));
+  char *path = "../test/data/basic.sam";
+  s->filename = strdup(path);
+  int ret = 1;
+  while (ret == 1) {
+    ret = sam_iterator(s);
+    if (s->qname) {
+      printf("%s\n",s->qname);
+      printf("%i\n",atoi(s->tlen));
+    }
   }
-
   return 0;
 }
 
