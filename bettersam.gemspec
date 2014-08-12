@@ -13,6 +13,8 @@ Gem::Specification.new do |gem|
   gem.files = Dir['Rakefile', '{lib,test}/**/*', 'README*', 'LICENSE*']
   gem.require_paths = %w[ lib ]
 
+  gem.add_dependency 'ffi'
+
   gem.add_development_dependency 'simplecov', '~> 0.8', '>= 0.8.2'
   gem.add_development_dependency 'rake', '~> 10.3', '>= 10.3.2'
   gem.add_development_dependency 'turn', '~> 0.9', '>= 0.9.7'

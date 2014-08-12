@@ -1,0 +1,18 @@
+require 'rake/clean'
+
+source = %w(fastersam.c)
+
+CLEAN.include('*.o')
+SRC = FileList.new(source)
+OBJ_SRC = SRC.ext('o')
+
+rule '.o' => '.c' do |t|
+  sh "gcc -fPIC -std=c99 -c -g -Wall -O2 "+t.source+" -o "+t.name
+end
+
+task :compile_lib => OBJ_SRC do
+  sh "gcc -shared -Wl,-soname,libfastersam.so -std=c99 "+OBJ_SRC.join(" ")+" -o libfastersam.so"
+end
+
+task :default => [:compile_lib, :clean]
+

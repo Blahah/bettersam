@@ -1,3 +1,6 @@
+require 'ffi'
+require 'fastersam'
+
 class BetterSam
 
   # meanings of SAM flag components, with index i
