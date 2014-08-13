@@ -179,10 +179,24 @@ int sam_iterator(SAMRecord *sam) {
   // wipe out any data from previous iteration
   clear_record(sam);
 
-  // load the next line
-  if (fgets(sam->line, _BSIZE, sam->stream) == NULL) {
-    fclose(sam->stream);
-    return 0;
+  // load lines, ignoring headers
+  int getnext = 1;
+  while(getnext) {
+    // load the next line
+    if (fgets(sam->line, _BSIZE, sam->stream) == NULL) {
+      fclose(sam->stream);
+      return 0;
+    }
+    // ignore headers
+    if (sam->line[0] != '@') {
+      getnext = 0;
+    }
+  }
+
+  // strip newline
+  size_t linelen = strlen(sam->line) - 1;
+  if (sam->line[linelen] == '\n') {
+    sam->line[linelen] = '\0';
   }
 
   // parse the SAM record string into an array
