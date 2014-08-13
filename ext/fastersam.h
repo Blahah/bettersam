@@ -3,14 +3,14 @@
 typedef struct {
   char *line;
   char *qname;
-  char *flag;
+  int flag;
   char *rname;
-  char *pos;
-  char *mapq;
+  int pos;
+  int mapq;
   char *cigar;
   char *rnext;
-  char *pnext;
-  char *tlen;
+  int pnext;
+  int tlen;
   char *seq;
   char *qual;
   char *tags;

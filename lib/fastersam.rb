@@ -9,14 +9,14 @@ class FasterSam
 
   class SAMRecord < FFI::Struct
     layout :qname,    :pointer,
-           :flag,     :pointer,
+           :flag,     :int,
            :rname,    :pointer,
-           :pos,      :pointer,
-           :mapq,     :pointer,
+           :pos,      :int,
+           :mapq,     :int,
            :cigar,    :pointer,
            :rnext,    :pointer,
-           :pnext,    :pointer,
-           :tlen,     :pointer,
+           :pnext,    :int,
+           :tlen,     :int,
            :seq,      :pointer,
            :qual,     :pointer,
            :tags,     :pointer,
@@ -37,7 +37,6 @@ class FasterSam
     end
     record = SAMRecord.new
     record[:filename] = FFI::MemoryPointer.from_string self.file
-    p record[:filename]
     result = nil
     result = parse_sam(record, &block)
   end

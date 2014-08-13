@@ -16,6 +16,12 @@ static char* alloc_and_copy(char *dst, char *src) {
   return dst;
 }
 
+int int_from_str(char *src) {
+  char *ptr;
+  int ret = (int) strtol(src, &ptr, 10);
+  return ret;
+}
+
 static char* initialize(char *ptr) {
   if(ptr!=NULL){
     free(ptr);
@@ -30,20 +36,6 @@ int* initialize_int(int *ptr) {
     ptr = NULL;
   }
   return ptr;
-}
-
-int check_header(char *header, char *firstline) {
-  if (*header == *firstline)
-    return 1;
-  else {
-    return 0;
-  }
-}
-
-int int_from_str(char *str) {
-  char *ptr;
-  int ret = (int) strtol(str, &ptr, 10);
-  return ret;
 }
 
 int parse_fields(char *str, char ***arr) {
@@ -105,28 +97,28 @@ int parse_fields(char *str, char ***arr) {
 
 void clear_record(SAMRecord *sam) {
   sam->qname = initialize(sam->qname);
-  sam->flag  = initialize(sam->flag);
+  sam->flag  = 0;
   sam->rname = initialize(sam->rname);
-  sam->pos   = initialize(sam->pos);
-  sam->mapq  = initialize(sam->mapq);
+  sam->pos   = 0;
+  sam->mapq  = 0;
   sam->cigar = initialize(sam->cigar);
   sam->rnext = initialize(sam->rnext);
-  sam->pnext = initialize(sam->pnext);
-  sam->tlen  = initialize(sam->tlen);
+  sam->pnext = 0;
+  sam->tlen  = 0;
   sam->seq   = initialize(sam->seq);
   sam->qual  = initialize(sam->qual);
 }
 
 void load_record(SAMRecord *sam, char **fields) {
   sam->qname = alloc_and_copy(sam->qname, fields[0]);
-  sam->flag  = alloc_and_copy(sam->flag, fields[1]);
+  sam->flag  = int_from_str(fields[1]);
   sam->rname = alloc_and_copy(sam->rname, fields[2]);
-  sam->pos   = alloc_and_copy(sam->pos, fields[3]);
-  sam->mapq  = alloc_and_copy(sam->mapq, fields[4]);
+  sam->pos   = int_from_str(fields[3]);
+  sam->mapq  = int_from_str(fields[4]);
   sam->cigar = alloc_and_copy(sam->cigar, fields[5]);
   sam->rnext = alloc_and_copy(sam->rnext, fields[6]);
-  sam->pnext = alloc_and_copy(sam->pnext, fields[7]);
-  sam->tlen  = alloc_and_copy(sam->tlen, fields[8]);
+  sam->pnext = int_from_str(fields[7]);
+  sam->tlen  = int_from_str(fields[8]);
   sam->seq   = alloc_and_copy(sam->seq, fields[9]);
   sam->qual  = alloc_and_copy(sam->qual, fields[10]);
   // sam->tags  = fields[11];
@@ -134,7 +126,8 @@ void load_record(SAMRecord *sam, char **fields) {
 
 int sam_iterator(SAMRecord *sam) {
   // intialise structure elements.
-  char *header = "@"; // SAM header
+  // TODO: handle header lines
+  // char *header = "@"; // SAM header
   if (!sam->stream) {
     if(strcmp(sam->filename,"stdin") == 0) {
       sam->stream = stdin;
@@ -178,11 +171,10 @@ int main (int argc, char ** argv) {
     ret = sam_iterator(s);
     if (s->qname) {
       printf("%s\n",s->qname);
-      printf("%i\n",atoi(s->tlen));
+      printf("%i\n",s->tlen);
     }
   }
   return 0;
 }
-
 
 #undef _BSIZE
