@@ -99,8 +99,7 @@ int parse_tag(char *str, SAMTagSet *tags) {
   char **tagparts = NULL;
   int nparts = split_string(str, ':', &tagparts);
   if(nparts != 3) {
-    printf("ERROR: malformed tag: %s", str);
-    printf("should have 3 parts, but has %i", nparts);
+    return 1;
   }
   char *name = tagparts[0];
   int value = atoi(tagparts[2]);
