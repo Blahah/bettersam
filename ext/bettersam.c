@@ -1,4 +1,4 @@
-#include "fastersam.h"
+#include "bettersam.h"
 
 static char* alloc_and_copy(char *dst, char *src) {
   if (dst==NULL || strlen(dst)<strlen(src)) {
@@ -210,21 +210,6 @@ int sam_iterator(SAMRecord *sam) {
   load_record(sam, fields, nfields);
 
   return 1;
-}
-
-int main (int argc, char ** argv) {
-  SAMRecord *s = malloc(sizeof(SAMRecord));
-  char *path = "../test/data/basic.sam";
-  s->filename = strdup(path);
-  int ret = 1;
-  while (ret == 1) {
-    ret = sam_iterator(s);
-    if (s->qname) {
-      printf("%s\n",s->qname);
-      printf("%i\n",s->tlen);
-    }
-  }
-  return 0;
 }
 
 #undef _BSIZE

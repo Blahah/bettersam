@@ -1,11 +1,11 @@
 Gem::Specification.new do |gem|
   gem.name        = 'bettersam'
-  gem.version     = '0.1.1'
-  gem.date        = '2014-08-05'
+  gem.version     = '0.2.0'
+  gem.date        = '2014-08-13'
   gem.license     = 'MIT'
   gem.summary     = "Extended SAM file parsing"
   gem.description = "Extended SAM (Sequence Alignment/Map) file parsing"
-  gem.authors     = ["Richard Smith-Unna", "Chris Boursnell", "Jesse Rodriguez"]
+  gem.authors     = ["Richard Smith-Unna", "Chris Boursnell"]
   gem.email       = 'rds45@cam.ac.uk'
   gem.files       = ["lib/bettersam.rb"]
   gem.homepage    = 'https://github.com/blahah/bettersam'

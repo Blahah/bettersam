@@ -2,7 +2,7 @@ coverage
 .gitignore~
 
 # c extension stuff
-ext/fastersam
+ext/bettersam
 *.dylib
 *.so
 ext/Rakefile

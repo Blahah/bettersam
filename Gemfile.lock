@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bettersam (0.1.1)
+    bettersam (0.2.0)
       ffi
 
 GEM

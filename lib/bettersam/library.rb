@@ -1,4 +1,4 @@
-class FasterSam
+class BetterSam
   class Library
 
     require 'rbconfig'
@@ -17,8 +17,8 @@ class FasterSam
     # @note this method is called automatically when the module is loaded
     def self.load
       path = File.expand_path File.dirname(__FILE__)
-      path.gsub!(/lib\/fastersam/,'ext')
-      File.join(path,"libfastersam.#{self.lib_extension}")
+      path.gsub!(/lib\/bettersam/,'ext')
+      File.join(path,"libbettersam.#{self.lib_extension}")
     end
 
   end
