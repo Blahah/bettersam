@@ -1,2 +1,8 @@
 coverage
 .gitignore~
+
+# c extension stuff
+ext/bettersam
+*.dylib
+*.so
+ext/Rakefile
