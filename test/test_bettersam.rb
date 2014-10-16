@@ -84,39 +84,13 @@ class TestBetterSam < Test::Unit::TestCase
     end
 
     should "detect exact matches" do
-      expected = [true, true, true, true, true, false]
+      expected = [true, false, false, false, false, true]
       i = 0
       @fs.each_record do |record|
         assert_equal expected[i], record.exact_match?, "record ##{i+1}"
         i += 1
       end
     end
-
-    # should "give A" do
-    #   assert @l1.get_base_at(0)=="A", "this is #{@l1.get_base_at(0)}, but should be A"
-    # end
-    #
-    # should "parse cigar strings correctly" do
-    #   @l3.parse_cigar
-    #   assert @l3.cigar_list.size == 5
-    # end
-    #
-    # should "parse another cigar string correctly" do
-    #   @l4l.parse_cigar
-    #   assert @l4l.cigar_list.size == 7
-    # end
-    #
-    # should "not be primary alignment" do
-    #   assert !@l5l.primary_aln?
-    # end
-    #
-    # should "get the edit distance" do
-    #   assert_equal 8, @l2.tags[:NM]
-    # end
-    #
-    # should "fail to get the edit distance" do
-    #   assert_equal nil, @l5l.tags[:NM]
-    # end
 
   end
 end
